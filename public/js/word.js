@@ -51,7 +51,7 @@ $('.box').mouseover().mouseout(function() {
 });
 function sendData(score) {
   //alert("gojo welcomes you");
-  fetch('http://localhost:3000/data', {
+  fetch('https://gameon-koov.onrender.com/data', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
