@@ -3,6 +3,7 @@ require('dotenv').config()
 const express = require("express")
 const path = require("path")
 const app = express()
+const session = require('express-session');
 
 // const hbs = require("hbs")
 const LogInCollection = require("./mongo")
@@ -26,6 +27,11 @@ app.use(express.static(publicPath))
 const distPath = path.join(__dirname, 'src');
 
 
+app.use(session({
+    secret: 'sk10', // Replace with a strong secret key
+    resave: false,
+    saveUninitialized: true
+}));
 
 
 
@@ -108,6 +114,7 @@ app.post('/login', async (req, res) => {
         n=data.name;
         console.log(n);
         dataStore.push(data);
+        req.session.user = { username: req.body.name };
 
         if (!check) {
             return res.send("User not found");
@@ -124,8 +131,10 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/data', async (req, res) => {
-    const playerName=n;
-    console.log(playerName);
+    //const playerName=n;
+    //console.log(playerName);
+    const playerName = req.session.user.username;
+
     const score = req.body.score;
     
     try {
