@@ -51,7 +51,7 @@ $('.box').mouseover().mouseout(function() {
 });
 function sendData(score) {
   //alert("gojo welcomes you");
-  fetch('https://gameon-koov.onrender.com/data', {
+  fetch('https://imprint-ngvy.onrender.com/data', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
