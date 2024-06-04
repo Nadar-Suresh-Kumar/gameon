@@ -78,6 +78,8 @@ app.post('/signup', async (req, res) => {
     const data = {
         name: req.body.name,
         password: req.body.password,
+        
+     
     };
    // dataStore.push(data);*/
     try {
@@ -142,7 +144,7 @@ app.post('/data', async (req, res) => {
         const player = await LogInCollection.findOne({ name: playerName });
 
         if (!player) {
-            return res.status(404).json({ error: 'Player not found' });
+            return res.status(404).json({ error: 'word Player not found' });
         }
         console.log(score)
         // Update the player's score
@@ -152,12 +154,58 @@ app.post('/data', async (req, res) => {
         // Save the updated player document
         await player.save();
         dataStore.pop();
-        res.status(200).json({ message: 'Score updated successfully' });
+        res.status(200).json({ message: 'word Score updated successfully' });
+    } catch (err) {
+        console.error('Error updating score:', err);
+        res.status(500).json({ error: 'word Could not update score' });
+    }
+});
+app.post('/datas', async (req, res) => {
+    const playerName = req.session.user.username;
+    const newScore = req.body.scores;
+
+    try {
+        // Find the player's document based on their name
+        const player = await LogInCollection.findOne({ name: playerName });
+
+        if (!player) {
+            return res.status(404).json({ error: 'stick Player not found' });
+        }
+        if(player.scores === undefined) {
+            player.scores=0;
+            console.log(player.scores);
+            player.save();
+          }
+
+        // Log the current and new scores for debugging
+        console.log(player.scores);
+
+
+        // Compare the new score with the current score
+        if (newScore > player.scores) {
+            // Update the player's score if the new score is higher
+            player.scores = newScore;
+            
+
+            // Save the updated player document
+            await player.save();
+
+            console.log('Score updated to:', newScore);
+            res.status(200).json({ message: 'stick Score updated successfully' });
+        } else {
+            console.log('stick New score is not higher. No update made.');
+            res.status(200).json({ message: ' stick New score is not higher than the current score. No update made.' });
+        }
+
+        // Remove the last item from dataStore
+       // dataStore.pop();
+
     } catch (err) {
         console.error('Error updating score:', err);
         res.status(500).json({ error: 'Could not update score' });
     }
 });
+
 
 
 

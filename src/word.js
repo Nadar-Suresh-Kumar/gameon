@@ -42,19 +42,21 @@ $('.box').mouseover().mouseout(function() {
     alert('Winner!');
     $('#restart').show();
     score=found;
-    sendData(score);
+    const finalScore = 5;
+        const userName = 'azxc'; 
+    //   alert("entering void");
+        sendData(score);
   }
   }
 });
-function sendData(inputData) {
- 
-
-  fetch('/data', {
+function sendData(score) {
+  //alert("gojo welcomes you");
+  fetch('http://localhost:3000/data', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ data: inputData })
+      body: JSON.stringify({ score: score }) // Send score directly
   })
   .then(response => {
       if (!response.ok) {
@@ -69,10 +71,6 @@ function sendData(inputData) {
       console.error('Error sending data:', error);
   });
 }
-
-
-
-
 
 
 

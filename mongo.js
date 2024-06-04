@@ -22,6 +22,10 @@ const logInSchema=new mongoose.Schema({
     scored:{
         type:Number,
         required:false
+    },
+    scores:{
+        type:Number,
+        required:false
     }
  
 })

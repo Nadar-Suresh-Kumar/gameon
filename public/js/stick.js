@@ -35,6 +35,7 @@ let trees = [];
 // Todo: Save high score to localStorage (?)
 
 let score = 0;
+console.log(`first: ${score}`);
 
 // Configuration
 const canvasWidth = 375;
@@ -73,7 +74,8 @@ const introductionElement = document.getElementById("introduction");
 const perfectElement = document.getElementById("perfect");
 const restartButton = document.getElementById("restart");
 const scoreElement = document.getElementById("score");
-
+console.log(`Second: ${scoreElement}`);
+console.log(`Score element: ${score}`);
 // Initialize layout
 resetGame();
 
@@ -89,6 +91,8 @@ function resetGame() {
   perfectElement.style.opacity = 0;
   restartButton.style.display = "none";
   scoreElement.innerText = score;
+  console.log(`third: ${scoreElement}`);
+  console.log(`four: ${score}`);
 
   // The first platform is always the same
   // x + w has to match paddingX
@@ -217,6 +221,11 @@ function animate(timestamp) {
           // Increase score
           score += perfectHit ? 2 : 1;
           scoreElement.innerText = score;
+          console.log(`Score element: ${score}`);
+          sendData(score);
+
+          
+
 
           if (perfectHit) {
             perfectElement.style.opacity = 1;
@@ -521,4 +530,27 @@ function getHillY(windowX, baseHeight, amplitude, stretch) {
 function getTreeY(x, baseHeight, amplitude) {
   const sineBaseY = window.innerHeight - baseHeight;
   return Math.sinus(x) * amplitude + sineBaseY;
+}
+
+function sendData(scores) {
+  //alert("gojo welcomes you");
+  fetch('http://localhost:3000/datas', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ scores: scores }) // Send score directly
+  })
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json();
+  })
+  .then(data => {
+      console.log('Data sent successfully:', data);
+  })
+  .catch(error => {
+      console.error('Error sending data:', error);
+  });
 }
