@@ -206,7 +206,30 @@ app.post('/datas', async (req, res) => {
     }
 });
 
+app.post('/datago', async (req, res) => {
+    const playerName = req.session.user.username;
 
+    let data = req.body;
+
+    try {
+        const player = await LogInCollection.findOne({ name: playerName });
+
+        if (!player) {
+            return res.status(404).json({ error: 'Player not found' });
+        }
+
+        player.computer = data.computer;
+        player.ties = data.ties;
+        player.player = data.player;
+
+        await player.save();
+
+        res.status(200).json({ message: 'Score updated successfully' });
+    } catch (err) {
+        console.error('Error updating score:', err);
+        res.status(500).json({ error: 'Could not update score' });
+    }
+});
 
 
 
