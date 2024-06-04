@@ -661,7 +661,7 @@ function sendData(computer, ties, player) {
         player: player
     };
     
-    fetch('http://localhost:3000/datago', {
+    fetch('http://imprint-ngvy.onrender.com/datago', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
