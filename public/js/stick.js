@@ -534,7 +534,7 @@ function getTreeY(x, baseHeight, amplitude) {
 
 function sendData(scores) {
   //alert("gojo welcomes you");
-  fetch('http://localhost:3000/datas', {
+  fetch('https://imprint-ngvy.onrender.com/datas', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json'
