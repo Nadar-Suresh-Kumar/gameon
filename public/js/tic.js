@@ -647,9 +647,37 @@ function endGame(who) {
     document.getElementById("computer_score").innerHTML = score.computer;
     document.getElementById("tie_score").innerHTML = score.ties;
     document.getElementById("player_score").innerHTML = score.player;
+    sendData(score.computer,score.ties,score.player);
     for (var i = 0; i <= 8; i++) {
         var id = "cell" + i.toString();
         document.getElementById(id).style.cursor = "default";
     }
     setTimeout(restartGame, 800);
+}
+function sendData(computer, ties, player) {
+    const data = {
+        computer: computer,
+        ties: ties,
+        player: player
+    };
+    
+    fetch('http://localhost:3000/datago', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(responseData => {
+        console.log('Data sent successfully:', responseData);
+    })
+    .catch(error => {
+        console.error('Error sending data:', error);
+    });
 }
